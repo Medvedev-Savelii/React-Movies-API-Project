@@ -11,21 +11,35 @@ class Main extends React.Component {
   };
 
   componentDidMount() {
-    fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=matrix`)
-      .then((Response) => Response.json())
-      .then((data) => this.setState({ movies: data.Search, loading: false }));
-  }
+	console.log(process.env);
+	fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=matrix`)
+		.then((response) => response.json())
+		.then((data) =>
+			this.setState({ movies: data.Search, loading: false })
+		)
+		.catch((err) => {
+			console.error(err);
+			this.setState({ loading: false });
+		});
+}
 
-  searchMovies = (str, type = "all") => {
-    this.setState({ loading: true });
-    fetch(
-      `http://www.omdbapi.com/?apikey=${API_KEY}&s=${str}${
-        type !== "all" ? `&type=${type}` : ""
-      }`
-    )
-      .then((response) => response.json())
-      .then((data) => this.setState({ movies: data.Search, loading: false }));
-  };
+searchMovies = (str, type = 'all') => {
+	this.setState({ loading: true });
+	fetch(
+		`https://www.omdbapi.com/?apikey=${API_KEY}&s=${str}${
+			type !== 'all' ? `&type=${type}` : ''
+		}`
+	)
+		.then((response) => response.json())
+		.then((data) =>
+			this.setState({ movies: data.Search, loading: false })
+		)
+		.catch((err) => {
+			console.error(err);
+			this.setState({ loading: false });
+		});
+};
+  
 
   render() {
     const { movies, loading } = this.state;
